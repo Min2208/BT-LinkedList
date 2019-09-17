@@ -9,33 +9,18 @@ public class MyLinkedList<E> {
 
     }
 
-    private class Node {
-        private Node next;
-        private Object data;
 
-        public Node(Object data) {
-            this.data = data;
-        }
-
-        public Node() {
-            this.data = null;
-        }
-
-        public Object getData() {
-            return this.data;
-        }
-    }
 
     public void add(int index, E element) {
         Node temp = head;
         Node holder;
 
-        for (int i = 0; i < index - 1 && temp.next != null; i++) {
-            temp = temp.next;
+        for (int i = 0; i < index - 1 && temp.getNext() != null; i++) {
+            temp = temp.getNext();
         }
-        holder = temp.next;
-        temp.next = new Node(element);
-        temp.next.next = holder;
+        holder = temp.getNext();
+        temp.setNext(new Node(element));
+        temp.getNext().setNext(holder);
         numberNodes++;
 
     }
@@ -43,26 +28,26 @@ public class MyLinkedList<E> {
     public void addFirst(E element) {
         Node temp = head;
         head = new Node(element);
-        head.next = temp;
+        head.setNext(temp);
         numberNodes++;
 
     }
 
     public void addLast(E element) {
         Node temp = head;
-        for (int i = 0; i < numberNodes - 1; i++) {
-            temp = temp.next;
+        for (int i = 1; i < numberNodes - 1; i++) {
+            temp = temp.getNext();
         }
-        temp.next = new Node(element);
+        temp.setNext(new Node(element));
         numberNodes++;
     }
 
     public boolean add(E element) {
         Node temp = head;
         for (int i = 0; i < numberNodes - 1; i++) {
-            temp = temp.next;
+            temp = temp.getNext();
         }
-        temp.next = new Node(element);
+        temp.setNext(new Node(element));
         numberNodes++;
         return true;
     }
@@ -70,31 +55,31 @@ public class MyLinkedList<E> {
     public E get(int index) {
         Node temp = head;
         for (int i = 0; i < index; i++) {
-            temp = temp.next;
+            temp = temp.getNext();
         }
-        return (E) temp.data;
+        return (E) temp.getData();
     }
 
     public E getFirst() {
-        return (E) head.data;
+        return (E) head.getData();
     }
 
     public E getLast() {
         Node temp = head;
         for (int i = 0; i < numberNodes - 1; i++) {
-            temp = temp.next;
+            temp = temp.getNext();
         }
-        return (E) temp.data;
+        return (E) temp.getData();
 
     }
 
     public E remove(int index) {
         Node temp = head;
-        Node result = temp.next;
+        Node result = temp.getNext();
         for (int i = 0; i < index - 1; i++) {
-            temp = temp.next;
+            temp = temp.getNext();
         }
-        temp.next = temp.next.next;
+        temp.setNext(temp.getNext().getNext());
         numberNodes--;
         return (E) result;
 
@@ -102,19 +87,19 @@ public class MyLinkedList<E> {
 
     public boolean remove(E element) {
         Node temp = head;
-        if (temp.data == element) {
-            head = temp.next;
+        if (temp.getData() == element) {
+            head = temp.getNext();
             numberNodes--;
             return true;
         }
         for (int i = 0; i < numberNodes; i++) {
 
-            if (temp.next.data == element) {
-                temp.next = temp.next.next;
+            if (temp.getNext().getData() == element) {
+                temp.setNext(temp.getNext().getNext());
                 numberNodes--;
                 return true;
             }
-            temp = temp.next;
+            temp = temp.getNext();
 
 
         }
@@ -129,10 +114,10 @@ public class MyLinkedList<E> {
         Node temp = head;
         for (int i = 0; i <= numberNodes; i++) {
 
-            if (temp.data == element) {
+            if (temp.getData() == element) {
                 return true;
             }
-            temp = temp.next;
+            temp = temp.getNext();
         }
 
         return false;
@@ -141,10 +126,10 @@ public class MyLinkedList<E> {
     public int indexOf(E element) {
         Node temp = head;
         for (int i = 0; i <= numberNodes; i++) {
-            if (temp.data == element) {
+            if (temp.getData() == element) {
                 return i;
             }
-            temp = temp.next;
+            temp = temp.getNext();
         }
         return -1;
     }
@@ -153,21 +138,22 @@ public class MyLinkedList<E> {
         Node temp = head;
         if (numberNodes < minCapacity) {
             for (int i = 0; i < minCapacity-1 ; i++) {
-                if (temp.next == null) {
-                    temp.next = new Node();
+                if (temp.getNext() == null) {
+                    temp.setNext(new Node());
                     numberNodes++;
                 }
-                temp = temp.next;
+                temp = temp.getNext();
 
             }
         }
     }
 
     public void clear() {
-        head.data = null;
-        head.next=null;
+        head.setNext(new Node());
         numberNodes = 1;
     }
+
+
 
 
 }
